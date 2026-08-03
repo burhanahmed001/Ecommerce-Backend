@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // CORS IMPORT HERE
+const cors = require('cors');
 const connectDB = require('./config/db');
 
-// Routes imports...
+
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
