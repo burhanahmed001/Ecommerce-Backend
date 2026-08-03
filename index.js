@@ -14,16 +14,15 @@ const userRoutes = require('./routes/userRoutes')
 const app = express();
 
 app.use(cors({
-  origin: ['https://burhan-store01.vercel.app', 'http://localhost:5173'], 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
 app.use(express.json()); 
 
-
 connectDB();
-
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -31,7 +30,6 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cart', cartRoutes); 
 app.use('/api/users', userRoutes);
-
 
 app.get('/', (req, res) => {
   res.send('API is running successfully...');
