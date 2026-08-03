@@ -35,6 +35,15 @@ app.get('/', (req, res) => {
   res.send('API is running successfully...');
 });
 
+app.get('/', (req, res) => {
+  res.send('API is running successfully...');
+});
+
+
+app.get('/api', (req, res) => {
+  res.json({ message: 'API Base Endpoint is active' });
+});
+
 app.use((err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
