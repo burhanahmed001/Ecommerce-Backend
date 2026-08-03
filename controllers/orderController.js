@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 exports.createOrder = async (req, res) => {
   try {
-    const { orderItems, shippingAddress, totalAmount } = req.body;
+    const { orderItems, shippingAddress, totalAmount, paymentMethod } = req.body;
  
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'Your shopping cart is empty' });
@@ -32,6 +32,7 @@ exports.createOrder = async (req, res) => {
       orderItems,
       shippingAddress,
       totalAmount,
+      paymentMethod: paymentMethod || 'Cash on Delivery',
     });
 
     res.status(201).json(order);
@@ -54,7 +55,7 @@ exports.getAllOrders = async (req, res) => {
     const orders = await Order.find().populate('user', 'name email').sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
-    res.status(500).json({ message: error.password });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -82,15 +83,14 @@ exports.updateOrderStatus = async (req, res) => {
           const product = await Product.findById(prodId);
           if (product) {
             const currentStock = Number(product.stockQuantity) || 0;
-           
             const orderedQty = Number(item.quantity) || 1; 
             
-            console.log('Found product: ${product.name} | Current Stock: ${currentStock} | Ordered Qty: ${orderedQty}');
+            console.log(`Found product: ${product.name} | Current Stock: ${currentStock} | Ordered Qty: ${orderedQty}`);
             
             product.stockQuantity = Math.max(0, currentStock - orderedQty);
             await product.save();
             
-            console.log(' SUCCESS! New stockQuantity: ${product.stockQuantity}');
+            console.log(` SUCCESS! New stockQuantity: ${product.stockQuantity}`);
           } else {
             console.log("❌ Product database mein nahi mila is ID par:", prodId);
           }
@@ -109,7 +109,7 @@ exports.updateOrderStatus = async (req, res) => {
             
             product.stockQuantity = currentStock + orderedQty;
             await product.save();
-            console.log(' Restored stock for ${product.name}, New Stock: ${product.stockQuantity}');
+            console.log(` Restored stock for ${product.name}, New Stock: ${product.stockQuantity}`);
           }
         }
       }

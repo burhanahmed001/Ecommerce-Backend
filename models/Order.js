@@ -28,6 +28,12 @@ const orderSchema = new mongoose.Schema(
       postalCode: { type: String },
       orderNotes: { type: String },
     },
+    paymentMethod: {
+      type: String,
+      required: true,
+      default: 'Cash on Delivery',
+      enum: ['Cash on Delivery', 'Online Payment', 'Stripe', 'JazzCash', 'EasyPaisa'],
+    },
     totalAmount: { type: Number, required: true },
     status: {
       type: String,
