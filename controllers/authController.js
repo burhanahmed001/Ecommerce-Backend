@@ -135,7 +135,8 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
   
-    const resetLink = `http://localhost:5173/auth/reset-password/${resetToken}`;
+   const frontendURL = process.env.FRONTEND_URL || "https://ecommerce-frontend-six-bice.vercel.app";
+const resetLink = `${frontendURL}/auth/reset-password/${resetToken}`;
 
 
    await transporter.sendMail({
